@@ -53,7 +53,6 @@ const actions = {
         data: { data, total, current_page, last_page, per_page }
       }) => {
         const products = data;
-        console.log('products', products);
         commit('setProducts', products);
         const pagination = {
           total,                  // total number of elements or items
