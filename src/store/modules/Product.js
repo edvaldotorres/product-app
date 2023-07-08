@@ -49,17 +49,20 @@ const actions = {
     }
 
     await axios.get(url)
-      .then(res => {
-        const products = res.data.data.data;
+      .then(({
+        data: { data, total, current_page, last_page, per_page }
+      }) => {
+        const products = data;
+        console.log('products', products);
         commit('setProducts', products);
         const pagination = {
-          total: res.data.data.total,  // total number of elements or items
-          per_page: res.data.data.per_page, // items per page
-          current_page: res.data.data.current_page, // current page (it will be automatically updated when users clicks on some page number).
-          total_pages: res.data.data.last_page // total pages in record
+          total,                  // total number of elements or items
+          per_page,               // items per page
+          current_page,           // current page (it will be automatically updated when users clicks on some page number).
+          total_pages: last_page  // total pages in record
         }
-        res.data.data.pagination = pagination;
-        commit('setProductsPaginated', res.data.data);
+        data.pagination = pagination;
+        commit('setProductsPaginated', data);
         commit('setProductIsLoading', false);
       }).catch(err => {
         console.log('error', err);

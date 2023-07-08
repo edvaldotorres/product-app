@@ -41,7 +41,7 @@
         </div>
 
         <div
-          v-for="(item, index) in productsPaginatedData.data"
+          v-for="(item, index) in productsPaginatedData"
           :key="item.id"
         >
           <product-detail
@@ -86,6 +86,8 @@ import { mapGetters, mapActions } from "vuex";
 import ProductDetail from "../list/ProductDetail";
 import VPagination from "@hennge/vue3-pagination";
 
+let debounce = null;
+
 export default {
   components: {
     ProductDetail,
@@ -109,7 +111,12 @@ export default {
     },
 
     searchProducts() {
-      this.fetchAllProducts(this.query);
+      // create debounce function
+      if (this.query.search.length < 3) return;
+      if (debounce) clearTimeout(debounce);
+      debounce = setTimeout(() => {
+        this.fetchAllProducts(this.query);
+      }, 500);
     },
   },
 
