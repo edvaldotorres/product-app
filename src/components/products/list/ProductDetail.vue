@@ -56,15 +56,16 @@ export default {
       this.$swal
         .fire({
           text: "Você tem certeza que deseja deletar este produto?",
-          icon: "error",
+          icon: "warning",
           cancelButtonText: "Não, Cancelar",
           confirmButtonText: "Sim, Deletar",
           showCancelButton: true,
+          reverseButtons: true,
         })
-        .then((result) => {
+        .then(async result => {
           if (result["isConfirmed"]) {
             // Put delete logic
-            this.deleteProduct(id);
+            await this.deleteProduct(id);
             this.fetchAllProducts({
               page: 1,
               search: ''
@@ -72,8 +73,7 @@ export default {
             this.$swal.fire({
               text: "Produto deletado com sucesso!",
               icon: "success",
-              position: 'top-end',
-              timer: 1000,
+              timer: 3000,
             });
           }
         });

@@ -111,8 +111,6 @@ export default {
     },
 
     searchProducts() {
-      // create debounce function
-      if (this.query.search.length < 3) return;
       if (debounce) clearTimeout(debounce);
       debounce = setTimeout(() => {
         this.fetchAllProducts(this.query);

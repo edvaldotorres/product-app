@@ -35,14 +35,14 @@ const actions = {
   async fetchAllProducts({ commit }, query = null) {
     let page = 1;
     let search = '';
-    if(query !== null){
+    if (query !== null) {
       page = query?.page || 1;
       search = query?.search || '';
     }
 
     commit('setProductIsLoading', true);
-    let url = `${process.env.VUE_APP_API_URL}products?page=${page}`;
-    if (search === null) {
+    let url = `${process.env.VUE_APP_API_URL}products`;
+    if (!search) {
       url = `${url}?page=${page}`;
     } else {
       url = `${process.env.VUE_APP_API_URL}products/view/search?search=${search}&page=${page}`
@@ -50,7 +50,7 @@ const actions = {
 
     await axios.get(url)
       .then(({
-        data: { data, total, current_page, last_page, per_page }
+        data: { data, meta: { total, current_page, last_page, per_page } }
       }) => {
         const products = data;
         commit('setProducts', products);
